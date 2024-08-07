@@ -130,18 +130,30 @@ function actualizarTotal() {
 botonComprar.addEventListener("click", comprarCarrito);
 function comprarCarrito() {
 
-    
+
     var productosEnCarrito = localStorage.getItem("productos-en-carrito");
     var data = JSON.parse(productosEnCarrito);
     console.log(data);
 
-    productosEnCarrito.length = 0;
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+        var url = "http://74.242.171.91/php/post.php";
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
+        xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        }
+        };
+        xhr.send(productosEnCarrito);
+        console.log(xhr.responseText);
 
+
+    productosEnCarrito.length = 0;
+    localStorage.setItem("productos-en-carrito", '[]');
     contenedorCarritoVacio.classList.add("disabled");
     contenedorCarritoProductos.classList.add("disabled");
     contenedorCarritoAcciones.classList.add("disabled");
     contenedorCarritoComprado.classList.remove("disabled");
-    
+
 }
 
